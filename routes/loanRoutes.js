@@ -1,10 +1,10 @@
 import express from "express";
-import LoanController from "../controllers/LoanController.js";
+import LoanController from "../controllers/loanControllers.js";
 
 const router = express.Router();
 
 router.post("/create", LoanController.postCreateLoan);
-//router.get("/", LoanController.getAllLoans);
+router.get("/List", LoanController.LoanList);
 
 // Rotas específicas precisam vir antes de /:id
 //router.get("/count", LoanController.countLoans);
@@ -13,7 +13,8 @@ router.post("/create", LoanController.postCreateLoan);
 //router.get("/value/:min/:max", LoanController.getLoansByValueRange);
 //router.get("/date/:date", LoanController.getLoansByDate);
 
-//router.get("/:id", LoanController.getLoanById);
+router.get("/ID/:id", LoanController.LoanId);
+router.get("/ID/:id", LoanController.LoanIdUser);
 //router.put("/:id", LoanController.updateLoan);
 //router.patch("/:id/status", LoanController.updateLoanStatus);
 //router.delete("/:id", LoanController.deleteLoan);

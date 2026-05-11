@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import BooksRoutes from "./routes/BooksRoutes.js";
-// import LoanRoutes from "./routes/LoanRoutes.js";
+import LoanRoutes from "./routes/loanRoutes.js";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/books", BooksRoutes);
-// app.use("/Loan", LoanRoutes);
+app.use("/loans", LoanRoutes);
 
 const startServer = async () => {
   try {

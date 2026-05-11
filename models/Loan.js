@@ -26,13 +26,9 @@ const loanSchema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: Boolean,
+      type: String,
       required:  true ,
-      unique: true,
-      uppercase: true,
-      trim: true,
-      Enum: ["Returned","Returned","Active"]
-
+      Enum: ["Returned","Active"]
     },
     fine: {
       type: Number,

@@ -1,11 +1,11 @@
-import Loan from "../models/Loan.js";
 import User from "../models/User.js";
-import Books from "../models/Books.js";
+import Books from "../models/books.js"
+import Loan from "../models/Loan.js";
 
-const CreateLoan = async (data) => {
-  const { userId, bookId, valorempresimo, status } = data;
+const postCreateLoan = async (data) => {
+  const { userId, bookId, dateLoan, dateScheduledReturn, returndate, status, fine } = data;
 
-  if (!userId || !bookId || !valorempresimo) {
+  if (!userId || !bookId || !dateLoan || !dateScheduledReturn || !status) {
     const error = new Error("userId, bookId e valorEmprestimo são obrigatórios");
     error.statusCode = 400;
     throw error;
@@ -27,7 +27,7 @@ const CreateLoan = async (data) => {
     throw error;
   }
 
-  if (!book.disponivel) {
+  if (book.AvailableQuantity <= 0) {
     const error = new Error("Este livro não está disponível para empréstimo");
     error.statusCode = 400;
     throw error;
@@ -44,23 +44,42 @@ const CreateLoan = async (data) => {
   });
 
 
-  book.disponivel = false;
+  book.AvailableQuantity -= 1;
   await book.save();
 
-  return Loan.findById(loan._id).populate("userId").populate("bookId");
+  return loan;
+};
+
+const LoanList = async () => {
+  return Loan.find();
+};
+
+const LoanId = async (id) => {
+  const book = await Books.findById(id);
+
+  if (!book) {
+    const error = new Error("Livro não encontrado");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return book;
 };
 
 
+
+
 export default {
-  CreateLoan,
-  getAllLoans,
-  getLoanById,
-  updateLoan,
-  deleteLoan,
-  getLoansByUser,
-  getLoansByCar,
-  updateLoanStatus,
-  getLoansByValueRange,
-  getLoansByDate,
-  countLoans,
+  postCreateLoan,
+  LoanList,
+  LoanId,
+  LoanIdUser
+//   updateLoan,
+//   deleteLoan,
+//   getLoansByUser,
+//   getLoansByCar,
+//   updateLoanStatus,
+//   getLoansByValueRange,
+//   getLoansByDate,
+//   countLoans,
 };
