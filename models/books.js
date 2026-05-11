@@ -16,15 +16,19 @@ const bookSchema = new mongoose.Schema(
       required: true,
     },
     AvailableQuantity: {
-      type: String,
+      type: Number,
       required: true,
-      enum: ["Pix", "card", "bank slip", "money", "financing"],
     },
     year: {
       type: Number,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
   },
+  
   {
     collection: "book",
     timestamps: true,
