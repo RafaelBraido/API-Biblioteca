@@ -4,11 +4,11 @@ import Loan from "../models/Loan.js";
 const createBook = async (data) => {
   const { Title, AuthorCategory, TotalQuantity, AvailableQuantity, year, active } = data;
 
-  if (!Title || !AuthorCategory || !TotalQuantity || !AvailableQuantity || !year || typeof active !== "boolean") {
-    const error = new Error("Título, autor, ano, gênero, preco e status são obrigatórios");
-    error.statusCode = 400;
-    throw error;
-  }
+  // if (!Title || !AuthorCategory || !TotalQuantity || !AvailableQuantity || !year ||  active !== "boolean") {
+  //   const error = new Error("Título, autor, ano, gênero, preco e status são obrigatórios");
+  //   error.statusCode = 400;
+  //   throw error;
+  // }
 
   return Books.create({
     Title,
@@ -32,7 +32,6 @@ const BookFindByID = async (id) => {
     error.statusCode = 404;
     throw error;
   }
-
   return book;
 };
 

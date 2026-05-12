@@ -30,34 +30,48 @@ const LoanId = async (req, res, next) => {
 };
 
 const LoanIdUser = async (req, res, next) => {
+  
   try {
-    const loan = await LoanService.LoanIdUser(req.params.id)
-    res.status(200).json(loan);
+    const Loan = await LoanService.LoanIdUser(req.params.userId);
+    res.json(Loan);
   } catch (error) {
     next(error);
   }
+};
 
-  const user = await User.findById(userId);
-
-  if (!user) {
-    const error = new Error("Usuário não encontrado");
-    error.statusCode = 404;
-    throw error;
-  }
-
-  const book = await Books.findById(bookId);
-
-  if (!book) {
-    const error = new Error("Livro não encontrado");
-    error.statusCode = 404;
-    throw error;
+const getActiveLoans = async (req, res, next) => {
+  try {
+    const activeLoans = await LoanService.getActiveLoans();
+    res.status(200).json(activeLoans);
+  } catch (error) {
+    next(error);
   }
 };
 
+const patchReturnLoan = async (req, res, next) => {
+  try {
+    const updatedLoan = await LoanService.patchReturnLoan(req.params.id);
+    res.status(200).json(updatedLoan)
+  } catch (error) {
+    next(error);
+  }
+};
+
+const Overdue = async (req, res, next) => {
+  try {
+    const overdueLoans = await LoanService.Overdue();
+    res.status(200).json(overdueLoans);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export default {
   postCreateLoan,
   LoanList,
   LoanId,
   LoanIdUser,
+  getActiveLoans,
+  patchReturnLoan,
+  Overdue,  
 };

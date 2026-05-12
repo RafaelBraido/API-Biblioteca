@@ -61,25 +61,58 @@ const LoanId = async (id) => {
     const error = new Error("Livro não encontrado");
     error.statusCode = 404;
     throw error;
-  }
 
+  }
   return book;
 };
 
+const LoanIdUser = async (userId) => {
+  console.log(userId)
+  return Loan.find({ userId: userId })
+};
 
+const getActiveLoans = async () => {
+  return Loan.find({ status: "Active" });
+}
 
+const patchReturnLoan = async (id) => {
+  const loan = await Loan.findById(id);
+
+  if (!loan) {
+    const error = new Error("Empréstimo não encontrado");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (loan.status === "Returned") {
+    const error = new Error("Este empréstimo já foi retornado");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  loan.status = "Returned";
+  loan.returndate = Date.now();
+  await loan.save();
+
+  const book = await Books.findById(loan.bookId);
+  book.AvailableQuantity += 1;
+  await book.save();
+
+  return loan;
+
+}
+
+const Overdue = async () => {
+  const now = new Date();
+  return Loan.find({ status: "Active", dateScheduledReturn: { $lt: now } });
+};
 
 export default {
   postCreateLoan,
   LoanList,
   LoanId,
-  LoanIdUser
-//   updateLoan,
-//   deleteLoan,
-//   getLoansByUser,
-//   getLoansByCar,
-//   updateLoanStatus,
-//   getLoansByValueRange,
-//   getLoansByDate,
-//   countLoans,
+  LoanIdUser,
+  getActiveLoans,
+  patchReturnLoan,
+  Overdue,
 };

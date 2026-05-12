@@ -6,17 +6,16 @@ const router = express.Router();
 router.post("/create", LoanController.postCreateLoan);
 router.get("/List", LoanController.LoanList);
 
-// Rotas específicas precisam vir antes de /:id
-//router.get("/count", LoanController.countLoans);
-//router.get("/user/:userId", LoanController.getLoansByUser);
+router.get("/active", LoanController.getActiveLoans);
+router.get("/over/overdue", LoanController.Overdue);
 //router.get("/car/:carId", LoanController.getLoansByCar);
 //router.get("/value/:min/:max", LoanController.getLoansByValueRange);
 //router.get("/date/:date", LoanController.getLoansByDate);
 
 router.get("/ID/:id", LoanController.LoanId);
-router.get("/ID/:id", LoanController.LoanIdUser);
+router.get("/User/:userId", LoanController.LoanIdUser);
 //router.put("/:id", LoanController.updateLoan);
-//router.patch("/:id/status", LoanController.updateLoanStatus);
+router.patch("/:id/return", LoanController.patchReturnLoan);
 //router.delete("/:id", LoanController.deleteLoan);
 
 export default router;
